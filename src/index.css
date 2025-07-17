@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+.html,
+body {
+  font-family: "Inter", sans-serif;
+  background: #f9fafb;
+}
+
+@theme {
+  --color-primary: #4f46e5;
+  --color-accent: #f59e0b;
+  --color-white: #ffffff;
+  --color-body: #788293;
+  --color-black: #1d293d;
+  --color-slate-black: #344054;
+  --color-neutral: #e5e7eb;
+  --color-neutral-light: #f9fafb;
+
+  --z-1: 1;
+  --z-99: 99;
+  --z-999: 999;
+  --z-9999: 9999;
+  --z-99999: 99999;
+  --z-999999: 999999;
+}
