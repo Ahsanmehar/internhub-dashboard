@@ -44,7 +44,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
       <div className="px-4 py-[13px] border-b border-neutral">
         <h1 className="text-xl font-bold text-black flex items-center gap-2 letter-1">
           <span className="p-2 rounded-md bg-primary">
-            <Building2 size={20} className="text-white" />
+            <Building2 size={18} className="text-white" />
           </span>
           Intern<span className="text-primary -m-2">Hub</span>
         </h1>
@@ -79,7 +79,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
       <div className="p-4 border-t border-neutral">
         <button
           onClick={logout}
-          className="flex items-center w-full p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+          className="flex items-center w-full p-2 rounded-lg text-gray-600 hover:bg-red-100 transition-colors hover:text-red-500"
         >
           <LogOut size={20} strokeWidth={1.2} className="mr-3" />
           <span className="text-sm font-medium">Logout</span>

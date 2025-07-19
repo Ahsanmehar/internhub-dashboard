@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { User, Mail, Briefcase, Lock } from "lucide-react";
 import FormInput from "../../components/FormInput";
+import { useAuth } from "../../context/AuthContext";
 
 export default function ProfilePage() {
   const userInfo = {
     name: "Ahsan Mehar",
     email: "Ahsanmeharj@gmail.com",
     role: "HR Manager",
-    department: "Web Develper",
+    department: "Web Developer",
     joinDate: "January 2024",
     phone: "+92 3097230656",
   };
@@ -19,7 +20,8 @@ export default function ProfilePage() {
   });
 
   const [errors, setErrors] = useState({});
-  const [success, setSuccess] = useState("");
+  const [success, setSuccess] = useState(false);
+  const { user } = useAuth();
 
   const validatePasswordForm = () => {
     const newErrors = {};
@@ -62,7 +64,9 @@ export default function ProfilePage() {
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
     if (validatePasswordForm()) {
-      setSuccess("Password has been Changed");
+      setSuccess(true);
+
+      setTimeout(() => setSuccess(false), 3000);
       setPasswordData({
         currentPassword: "",
         newPassword: "",
@@ -98,11 +102,11 @@ export default function ProfilePage() {
 
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-8">
             <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-white text-2xl font-medium">
-              {getInitials(userInfo.name)}
+              {getInitials(user.name || userInfo.name)}
             </div>
             <div className="text-center sm:text-left">
               <h3 className="text-xl font-semibold text-slate-black">
-                {userInfo.name}
+                {user.name || userInfo.name}
               </h3>
               <p className="text-body">{userInfo.role}</p>
               <button className="mt-3 px-4 py-2 border border-neutral rounded-md text-sm font-medium text-slate-black hover:bg-gray-50">
@@ -129,7 +133,7 @@ export default function ProfilePage() {
                       Email Address
                     </p>
                     <p className="text-slate-black break-all">
-                      {userInfo.email}
+                      {user.email || userInfo.email}
                     </p>
                   </div>
                 </div>
@@ -283,9 +287,11 @@ export default function ProfilePage() {
               <Lock className="w-5 h-5 text-body" />
               Change Password
             </h2>
-            <h2 className="text-sm font-medium text-green-500 mb py-3 px-2 rounded-md bg-green-50 text-center">
-              {success}
-            </h2>
+            {success && (
+              <h2 className="text-sm font-medium text-green-500 mb py-3 px-2 rounded-md bg-green-50 text-center">
+                Password updated successfully!
+              </h2>
+            )}
 
             <form onSubmit={handlePasswordSubmit} className="space-y-4">
               <FormInput

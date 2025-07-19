@@ -5,30 +5,32 @@ import {
   UserMinus,
   TrendingUp,
 } from "lucide-react";
+import { initialCandidates } from "../../data/candidates";
+import { initialInternships } from "../../data/internships";
 
 const statusData = [
   {
     icon: Users,
     title: "Total Candidates",
-    numbers: "1,250",
+    numbers: initialCandidates.length,
     percentage: "18%",
   },
   {
     icon: Briefcase,
     title: "Total Internships",
-    numbers: "320",
+    numbers: initialInternships.length,
     percentage: "22%",
   },
   {
     icon: UserCheck,
     title: "Hired Candidates",
-    numbers: "870",
+    numbers: initialCandidates.filter((c) => c.status == "Approved").length,
     percentage: "30%",
   },
   {
     icon: UserMinus,
     title: "Rejected Candidates",
-    numbers: "150",
+    numbers: initialCandidates.filter((r) => r.status === "Rejected").length,
     percentage: "12%",
   },
 ];
@@ -60,13 +62,13 @@ const Dashboard = () => {
             </div>
 
             <div className="bg-primary rounded-xl p-6 text-white">
-              <h1 className="text-3xl font-bold mb-2">{data.numbers}</h1>
-              <div className="flex items-center gap-4">
+              <h1 className="text-3xl font-semibold mb-2">{data.numbers}</h1>
+              <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full text-sm">
                   <TrendingUp size={16} />
                   <span>{data.percentage}</span>
                 </div>
-                <div className="text-sm opacity-80 font-light">
+                <div className="text-sm opacity-80 font-light whitespace-nowrap">
                   vs {data.comparison || "last period"}
                 </div>
               </div>

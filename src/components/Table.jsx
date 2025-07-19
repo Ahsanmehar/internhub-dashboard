@@ -1,3 +1,4 @@
+import { ArrowDownUp } from "lucide-react";
 import { useState } from "react";
 
 const Table = ({ columns, data, className = "" }) => {
@@ -42,7 +43,11 @@ const Table = ({ columns, data, className = "" }) => {
                     {column.label}
                     {sortConfig.key === column.key && (
                       <span className="ml-1">
-                        {sortConfig.direction === "asc" ? "↑" : "↓"}
+                        {sortConfig.direction === "asc" ? (
+                          <ArrowDownUp size={16} />
+                        ) : (
+                          <ArrowDownUp size={16} />
+                        )}
                       </span>
                     )}
                   </div>

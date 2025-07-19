@@ -3,9 +3,23 @@ import Modal from "../../components/Model";
 import { initialInternships } from "../../data/internships";
 import { Plus, Briefcase, Calendar, DollarSign, Layers } from "lucide-react";
 import FormInput from "../../components/FormInput";
+import SelectField from "../../components/SelectFeild";
+import SearchBar from "../../components/SearchBar";
+
+const openCloseOptions = [
+  {
+    value: "Open",
+    label: "Open",
+  },
+  {
+    value: "Closed",
+    label: "Closed",
+  },
+];
 
 const Internships = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [internships, setInternships] = useState(initialInternships);
   const [formData, setFormData] = useState({
     title: "",
@@ -17,12 +31,10 @@ const Internships = () => {
   });
   const [errors, setErrors] = useState({});
 
-  // Form validation function
   const validateForm = () => {
     const newErrors = {};
     let isValid = true;
 
-    // Title validation
     if (!formData.title.trim()) {
       newErrors.title = "Title is required";
       isValid = false;
@@ -31,7 +43,6 @@ const Internships = () => {
       isValid = false;
     }
 
-    // Description validation
     if (!formData.description.trim()) {
       newErrors.description = "Description is required";
       isValid = false;
@@ -40,13 +51,11 @@ const Internships = () => {
       isValid = false;
     }
 
-    // Department validation
     if (!formData.department.trim()) {
       newErrors.department = "Department is required";
       isValid = false;
     }
 
-    // Duration validation
     if (!formData.duration) {
       newErrors.duration = "Duration is required";
       isValid = false;
@@ -55,7 +64,6 @@ const Internships = () => {
       isValid = false;
     }
 
-    // Stipend validation
     if (!formData.stipend) {
       newErrors.stipend = "Stipend is required";
       isValid = false;
@@ -68,14 +76,12 @@ const Internships = () => {
     return isValid;
   };
 
-  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
-    // Clear error when user types
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -84,7 +90,6 @@ const Internships = () => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -92,7 +97,6 @@ const Internships = () => {
       return;
     }
 
-    // Create new internship object
     const newInternship = {
       id: internships.length + 1,
       title: formData.title.trim(),
@@ -101,13 +105,11 @@ const Internships = () => {
       duration: `${formData.duration} weeks`,
       stipend: `$${formData.stipend}`,
       status: formData.status,
-      icon: Briefcase, // Default icon, you can customize this
+      icon: Briefcase,
     };
 
-    // Update internships state
     setInternships([...internships, newInternship]);
 
-    // Reset form and close modal
     setFormData({
       title: "",
       description: "",
@@ -120,6 +122,12 @@ const Internships = () => {
     setIsModalOpen(false);
   };
 
+  const filteredInternships = internships.filter(
+    (internship) =>
+      internship.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      internship.department.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6">
@@ -130,17 +138,24 @@ const Internships = () => {
             hires.
           </p>
         </div>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/95 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Post New Internship
-        </button>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <SearchBar
+            placeholder="Search candidates..."
+            value={searchTerm}
+            onChange={setSearchTerm}
+          />
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center whitespace-nowrap px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/98 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Post New Internship
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {internships.map((internship) => (
+        {filteredInternships.map((internship) => (
           <div
             key={internship.id}
             className="bg-white rounded-2xl border border-neutral shadow-sm p-6"
@@ -166,7 +181,7 @@ const Internships = () => {
               </span>
             </div>
 
-            <p className="text-body text-sm leading-relaxed mb-6">
+            <p className="text-body text-sm leading-relaxed mb-6 line-clamp-2">
               {internship.description}
             </p>
 
@@ -224,9 +239,9 @@ const Internships = () => {
                 value={formData.description}
                 onChange={handleInputChange}
                 placeholder="Briefly summarize the internship role..."
-                className={`w-full px-4 py-3 border text-body placeholder:text-sm font-normal bg-white rounded-md outline-none focus:ring-1 focus:ring-primary transition-all duration-300 ${
+                className={`w-full px-4 py-3 border text-body placeholder:text-sm font-normal bg-white rounded-md outline-none focus:ring-1 transition-all duration-300 ${
                   errors.description
-                    ? "border-red-500"
+                    ? "border-red-500 focus:ring-red-500"
                     : "border-body/50 focus:border-primary"
                 }`}
               />
@@ -270,27 +285,17 @@ const Internships = () => {
                 min="0"
               />
             </div>
-            <div>
-              <label className="block mb-3 mr-2 text-sm font-medium text-body">
-                Status
-              </label>
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleInputChange}
-                className={`w-full p-3 text-slate-black border rounded-md shadow-sm focus:outline-none focus:ring-primary ${
-                  errors.status
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-body/50 focus:border-primary"
-                }`}
-              >
-                <option value="Open">Open</option>
-                <option value="Closed">Closed</option>
-              </select>
-              {errors.status && (
-                <p className="mt-1 text-sm text-red-600">{errors.status}</p>
-              )}
-            </div>
+
+            <SelectField
+              label="Status"
+              name="status"
+              value={formData.status}
+              onChange={handleInputChange}
+              options={openCloseOptions}
+              error={errors.status}
+              required={false}
+            />
+
             <div className="flex justify-end space-x-3 pt-4">
               <button
                 type="button"

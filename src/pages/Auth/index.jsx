@@ -14,7 +14,6 @@ const Login = () => {
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    console.log(re.test(String(email).toLowerCase()));
     return re.test(String(email).toLowerCase());
   };
 

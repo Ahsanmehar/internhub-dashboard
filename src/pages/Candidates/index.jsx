@@ -5,6 +5,33 @@ import Modal from "../../components/Model";
 import { initialCandidates } from "../../data/candidates";
 import { Plus } from "lucide-react";
 import FormInput from "../../components/FormInput";
+import SelectField from "../../components/SelectFeild";
+
+const internshipOptions = [
+  { value: "Frontend Developer", label: "Frontend Developer" },
+  { value: "Backend Developer", label: "Backend Developer" },
+  { value: "UI/UX Designer", label: "UI/UX Designer" },
+  { value: "Full Stack Developer", label: "Full Stack Developer" },
+  { value: "Mobile App Developer", label: "Mobile App Developer" },
+  { value: "Data Analyst", label: "Data Analyst" },
+  { value: "Machine Learning Intern", label: "Machine Learning Intern" },
+  { value: "Digital Marketing Intern", label: "Digital Marketing Intern" },
+];
+
+const statusOptions = [
+  {
+    value: "Pending",
+    label: "Pending",
+  },
+  {
+    value: "Approved",
+    label: "Approved",
+  },
+  {
+    value: "Rejected",
+    label: "Rejected",
+  },
+];
 
 const Candidates = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -105,9 +132,9 @@ const Candidates = () => {
   );
 
   const columns = [
-    { key: "name", label: "Name", sortable: true },
+    { key: "name", label: "Name", sortable: false },
     { key: "email", label: "Email", sortable: true },
-    { key: "internship", label: "Applied Internship", sortable: true },
+    { key: "internship", label: "Applied Internship", sortable: false },
     {
       key: "status",
       label: "Status",
@@ -185,52 +212,25 @@ const Candidates = () => {
               error={errors.email}
               required
             />
-            <div>
-              <label className="block mb-3 mr-2 text-sm font-medium text-body">
-                Internship
-              </label>
-              <select
-                name="internship"
-                value={formData.internship}
-                onChange={handleInputChange}
-                className={`w-full p-3 text-black border rounded-md shadow-sm focus:outline-none focus:ring-primary ${
-                  errors.internship
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-body/50 focus:border-primary"
-                }`}
-                required
-              >
-                <option value="Frontend Developer">Frontend Developer</option>
-                <option value="Backend Developer">Backend Developer</option>
-                <option value="UI/UX Designer">UI/UX Designer</option>
-              </select>
-              {errors.internship && (
-                <p className="mt-1 text-sm text-red-600">{errors.internship}</p>
-              )}
-            </div>
-            <div>
-              <label className="block mb-3 mr-2 text-sm font-medium text-body">
-                Status
-              </label>
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleInputChange}
-                className={`w-full px-3 py-3 text-black border rounded-md shadow-sm focus:outline-none focus:ring-primary ${
-                  errors.status
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-body/50 focus:border-primary"
-                }`}
-                required
-              >
-                <option value="Pending">Pending</option>
-                <option value="Approved">Approved</option>
-                <option value="Rejected">Rejected</option>
-              </select>
-              {errors.status && (
-                <p className="mt-1 text-sm text-red-600">{errors.status}</p>
-              )}
-            </div>
+            <SelectField
+              label="Internship"
+              name="internship"
+              value={formData.internship}
+              onChange={handleInputChange}
+              options={internshipOptions}
+              error={errors.internship}
+              required={false}
+            />
+            <SelectField
+              label="Status"
+              name="status"
+              value={formData.status}
+              onChange={handleInputChange}
+              options={statusOptions}
+              error={errors.status}
+              required={false}
+            />
+
             <div className="flex justify-end space-x-3 pt-4">
               <button
                 type="button"

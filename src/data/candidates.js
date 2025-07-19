@@ -25,7 +25,7 @@ export const initialCandidates = [
     name: "Emily Davis",
     email: "emily@example.com",
     internship: "Data Analyst",
-    status: "Pending",
+    status: "Rejected",
   },
   {
     id: 5,
